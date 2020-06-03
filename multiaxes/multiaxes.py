@@ -46,6 +46,10 @@ class Multiaxes:
         self._yl[:] = ylab
         self._xp[:] = xpad
         self._yp[:] = ypad
+        if nx == 1:
+            self._xp[:] = 0.
+        if ny == 1:
+            self._yp[:] = 0.
         self._tp[:] = tit
         self._pj[:, :] = proj
         if cb is None:
