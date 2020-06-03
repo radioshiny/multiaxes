@@ -27,7 +27,11 @@ ax.set_title('RMS noise map')
 ax.imshow(data, cmap='jet', origin='lower')
 fig.savefig('images/rms.pdf')
 ```
-<object data="./images/rms.pdf" type="application/pdf"></object>
+<object data="./images/rms.pdf" type="application/pdf">
+    <embed src="./images/rms.pdf">
+        <p>&nbsp;</p>
+    </embed>
+</object>
 ### Figure width
 
 ### Color bar
