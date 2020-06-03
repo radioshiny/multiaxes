@@ -27,7 +27,7 @@ ax.set_title('RMS noise map')
 ax.imshow(data, cmap='jet', origin='lower')
 fig.savefig('images/rms.pdf')
 ```
-<img src="./images/rms.pdf" width="50%"/>
+<img src="./images/rms.png" width="50%"/>
 
 ### Figure width
 
