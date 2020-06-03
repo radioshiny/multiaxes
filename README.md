@@ -5,7 +5,9 @@ This script makes easy to draw a figure with multiple axes for the AASTeX manusc
 
 ## Install
 
-`pip install git+https://github.com/radioshiny/multiaxes.git`
+```bash
+pip install git+https://github.com/radioshiny/multiaxes.git
+```
 
 ## Examples
 

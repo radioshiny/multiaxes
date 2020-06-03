@@ -5,7 +5,7 @@ with open("README.md", "r") as fh:
 
 setup(
     name="multiaxes", # Replace with your own username
-    version="0.0.3",
+    version="0.0.4",
     author="Shinyoung Kim",
     author_email="radioshiny@gmail.com",
     description="Multiaxes is a python class based on matplotlib",
@@ -16,5 +16,5 @@ setup(
     classifiers=[
         "Programming Language :: Python :: 3.7",
     ],
-    python_requires='>=3.6',
+    python_requires='>=2.7',
 )
