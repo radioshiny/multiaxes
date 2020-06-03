@@ -9,6 +9,13 @@ This script makes easy to draw a figure with multiple axes for the AASTex manusc
 
 ## Examples
 
+### Single plot
+```python
+from multiaxes import Multiaxes
+
+
+```
+
 ### Figure width
 
 ### Color bar
