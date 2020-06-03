@@ -22,7 +22,7 @@ data = np.random.randn(10000).reshape((100, 100))
 
 # make figure
 mx = Multiaxes(col=1, nx=1, ny=1, xyr=1., xlab=0.3, ylab=0.4, tit=0.2, scale=0.7)
-fig, ax, _ = mx.drawfig(True)
+fig, ax, _ = mx.drawfig()
 ax.set_xlabel('x')
 ax.set_ylabel('y')
 ax.set_title('RMS noise map')
