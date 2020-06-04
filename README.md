@@ -29,9 +29,8 @@ ax.set_title('RMS noise map')
 ax.imshow(data, cmap='jet', origin='lower')
 fig.savefig('images/rms.pdf')
 ```
-<kbd>
-<img src="./images/rms.png" width="497"/>
-</kbd>
+<kbd><img src="./images/rms.png" width="497"/></kbd>
+
 
 * `col=1` (int) : figure width = width of one column in two column mode
 * `nx=1` (int) : number of subplots in the horizontal direction
