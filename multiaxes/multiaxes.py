@@ -9,8 +9,8 @@ plt.rcParams['xtick.major.size'] = 5
 plt.rcParams['ytick.major.size'] = 5
 plt.rcParams['xtick.minor.size'] = 3
 plt.rcParams['ytick.minor.size'] = 3
-plt.rcParams['xtick.minor.visible'] = True
-plt.rcParams['ytick.minor.visible'] = True
+# plt.rcParams['xtick.minor.visible'] = True
+# plt.rcParams['ytick.minor.visible'] = True
 plt.rcParams['xtick.labelsize'] = 'small'
 plt.rcParams['ytick.labelsize'] = 'small'
 
