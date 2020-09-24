@@ -5,8 +5,14 @@ plt.rcParams['xtick.direction'] = 'in'
 plt.rcParams['ytick.direction'] = 'in'
 plt.rcParams['xtick.top'] = True
 plt.rcParams['ytick.right'] = True
-plt.rcParams['font.family'] = 'serif'
-plt.rcParams['mathtext.fontset'] = 'dejavuserif'
+plt.rcParams['xtick.major.size'] = 5
+plt.rcParams['ytick.major.size'] = 5
+plt.rcParams['xtick.minor.size'] = 3
+plt.rcParams['ytick.minor.size'] = 3
+
+plt.rcParams['font.family'] = 'sans-serif'
+plt.rcParams['font.sans-serif'] = 'DejaVu Sans'
+plt.rcParams['mathtext.fontset'] = 'dejavusans'
 
 
 class Multiaxes:
@@ -197,6 +203,9 @@ class Multiaxes:
         if self._nx == 1 and self._ny == 1:
             self._ax = self.ax[0]
             self._cax = self._cax[0]
+        if self._ny > 1:
+            self._ax = np.flip(self._ax, axis=0)
+            self._cax = np.flip(self._cax, axis=0)
         return self._fig, self._ax, self._cax
 
     def subaxes(self, ax, box):
