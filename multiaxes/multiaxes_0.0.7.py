@@ -20,8 +20,8 @@ plt.rcParams['mathtext.fontset'] = 'dejavusans'
 
 
 class Multiaxes:
-    def __init__(self, col=1, nx=1, ny=1, xyr=1., xlab=0.5, ylab=0.5, xpad=0.2, ypad=0.2, tit=0.,
-                 cb=None, clab=0.4, cpad=0.05, xxr=1., scale=0.6, margin=0.02, proj=None, cpos='top'):
+    def __init__(self, col=1, nx=1, ny=1, xyr=1., xlab=0.5, ylab=0.5, xpad=0.2, ypad=0.2, tit=0., cb=None, cblab=0.4,
+                 xxr=1., scale=0.7, margin=0.1, proj=None):
         if int(col) in [1, 2]:
             self._col = int(col)
         else:
@@ -39,18 +39,8 @@ class Multiaxes:
         self._xl = np.zeros(ny, dtype=float)
         self._yl = np.zeros(nx, dtype=float)
         self._tp = np.zeros(ny, dtype=float)
-        if cpos == 'top':
-            self._cb = 't'
-            self._cw = np.zeros(ny, dtype=float)
-            self._cl = np.zeros(ny, dtype=float)
-            self._cp = np.zeros(ny, dtype=float)
-        elif cpos == 'right':
-            self._cb = 'r'
-            self._cw = np.zeros(nx, dtype=float)
-            self._cl = np.zeros(nx, dtype=float)
-            self._cp = np.zeros(nx, dtype=float)
-        else:
-            raise ValueError("'cpos' should be in ['top', 'right']")
+        self._cbw = np.zeros(nx, dtype=float)
+        self._cbl = np.zeros(nx, dtype=float)
         self._pj = np.zeros((ny, nx), dtype=object)
         if nx > 1:
             self._xp = np.zeros(nx-1, dtype=float)
@@ -73,13 +63,11 @@ class Multiaxes:
         self._tp[:] = tit
         self._pj[:, :] = proj
         if cb is None:
-            self._cw[:] = 0.
-            self._cl[:] = 0.
-            self._cp[:] = 0.
+            self._cbw[:] = 0.
+            self._cbl[:] = 0.
         else:
-            self._cw[:] = cb
-            self._cl[:] = clab
-            self._cp[:] = cpad
+            self._cbw[:] = cb
+            self._cbl[:] = cblab
         self._sc = 1./float(scale)
         self._mg = np.zeros(4, dtype=float)
         self._mg[:] = margin
@@ -134,29 +122,19 @@ class Multiaxes:
             self._xl[1:] = 0.
             self._yp[:] = pad
             self._tp[:-1] = 0.
-            if self._cb == 't':
-                self._cw[:-1] = 0.
-                self._cl[:-1] = 0.
-                self._cp[:-1] = 0.
         if xy[1] and self._nx > 1:
             self._sharey = True
             self._yl[1:] = 0.
             self._xp[:] = pad
-            if self._cb == 'r':
-                self._cw[:-1] = 0.
-                self._cl[:-1] = 0.
-                self._cp[:-1] = 0.
+            self._cbw[:-1] = 0.
+            self._cbl[:-1] = 0.
 
-    def drawfig(self, verbose=False, border=False):
+    def drawfig(self, verbose=False):
         page_width = 7.3*self._sc
         col_width = 3.485*self._sc
         page_height = 8.0*self._sc
-        if self._cb == 't':
-            outx = self._yl.sum()+self._xp.sum()+self._mg[[0, 2]].sum()
-            outy = self._xl.sum()+self._yp.sum()+self._tp.sum()+self._cw.sum()+self._cl.sum()+self._cp.sum()+self._mg[[1, 3]].sum()
-        else:
-            outx = self._yl.sum()+self._xp.sum()+self._cw.sum()+self._cl.sum()+self._cp.sum()+self._mg[[0, 2]].sum()
-            outy = self._xl.sum()+self._yp.sum()+self._tp.sum()+self._mg[[1, 3]].sum()
+        outx = self._yl.sum()+self._xp.sum()+self._cbw.sum()+self._cbl.sum()+self._mg[[0, 2]].sum()
+        outy = self._xl.sum()+self._yp.sum()+self._tp.sum()+self._mg[[1, 3]].sum()
         if self._col == 1:
             fig_width = col_width
         else:
@@ -178,14 +156,8 @@ class Multiaxes:
             print('y-label width =', self._yl)
             print('x-pad width =', self._xp)
             print('y-pad height =', self._yp)
-            if self._cb == 't':
-                print('colorbar height =', self._cw)
-                print('colorbar label height =', self._cl)
-                print('colorbar pad height =', self._cp)
-            else:
-                print('colorbar width =', self._cw)
-                print('colorbar label width =', self._cl)
-                print('colorbar pad width =', self._cp)
+            print('colorbar width =', self._cbw)
+            print('colorbar label width =', self._cbl)
             print('outside x width =', outx)
             print('outside y height =', outy)
             print('remain width =', remain_width)
@@ -198,25 +170,12 @@ class Multiaxes:
         self._fw, self._fh = fig_width, fig_height
         self._ax = np.zeros((self._ny, self._nx), dtype=object)
         self._cax = np.zeros((self._ny, self._nx), dtype=object)
-        if border:
-            x0 = self._mg[0]/fig_width
-            y0 = self._mg[1]/fig_height
-            x1 = (fig_width-self._mg[[0, 2]].sum())/fig_width
-            y1 = (fig_height-self._mg[[1, 3]].sum())/fig_height
-            bd = self._fig.add_axes([x0, y0, x1, y1])
-            bd.axes.get_xaxis().set_visible(False)
-            bd.axes.get_yaxis().set_visible(False)
         for yi in range(self._ny):
             for xi in range(self._nx):
-                if self._cb == 't':
-                    x0 = (self._mg[0]+self._yl[:xi+1].sum()+xs[:xi].sum()+self._xp[:xi].sum())/fig_width
-                    y0 = (self._mg[1]+self._xl[:yi+1].sum()+ys[:yi].sum()+self._tp[:yi].sum()+self._yp[:yi].sum()
-                          +self._cw[:yi].sum()+self._cl[:yi].sum()+self._cp[:yi].sum())/fig_height
-                else:
-                    x0 = (self._mg[0]+self._yl[:xi+1].sum()+xs[:xi].sum()+self._xp[:xi].sum()
-                          +self._cw[:xi].sum()+self._cl[:xi].sum()+self._cp[:xi].sum())/fig_width
-                    y0 = (self._mg[1]+self._xl[:yi+1].sum()+ys[:yi].sum()+self._tp[:yi].sum()
-                          +self._yp[:yi].sum())/fig_height
+                x0 = (self._mg[0]+self._yl[:xi+1].sum()+xs[:xi].sum()+self._xp[:xi].sum()
+                      +self._cbw[:xi].sum()+self._cbl[:xi].sum())/fig_width
+                y0 = (self._mg[1]+self._xl[:yi+1].sum()+ys[:yi].sum()+self._tp[:yi].sum()
+                      +self._yp[:yi].sum())/fig_height
                 x1 = xs[xi]/fig_width
                 y1 = ys[yi]/fig_height
                 if verbose:
@@ -230,25 +189,16 @@ class Multiaxes:
                     self._ax[yi, xi].xaxis.set_minor_formatter(plt.NullFormatter())
         for yi in range(self._ny):
             for xi in range(self._nx):
-                if self._cb == 't':
-                    x0 = (self._mg[0]+self._yl[:xi+1].sum()+xs[:xi].sum()+self._xp[:xi].sum())/fig_width
-                    y0 = (self._mg[1]+self._xl[:yi+1].sum()+ys[:yi+1].sum()+self._tp[:yi].sum()+self._yp[:yi].sum()
-                          +self._cw[:yi].sum()+self._cl[:yi].sum()+self._cp[:yi+1].sum())/fig_height
-                    x1 = xs[xi]/fig_width
-                    y1 = self._cw[yi]/fig_height
-                else:
-                    x0 = (self._mg[0]+self._yl[:xi+1].sum()+xs[:xi+1].sum()+self._xp[:xi].sum()
-                          +self._cw[:xi].sum()+self._cl[:xi].sum()+self._cp[:xi+1].sum())/fig_width
-                    y0 = (self._mg[1]+self._xl[:yi+1].sum()+ys[:yi].sum()+self._tp[:yi].sum()
-                          +self._yp[:yi].sum())/fig_height
-                    x1 = self._cw[xi]/fig_width
-                    y1 = ys[yi]/fig_height
+                x0 = (self._mg[0]+self._yl[:xi+1].sum()+xs[:xi+1].sum()+self._xp[:xi].sum()
+                      +self._cbw[:xi].sum()+self._cbl[:xi].sum())/fig_width
+                y0 = (self._mg[1]+self._xl[:yi+1].sum()+ys[:yi].sum()+self._tp[:yi].sum()
+                      +self._yp[:yi].sum())/fig_height
+                x1 = self._cbw[xi]/fig_width
+                y1 = ys[yi]/fig_height
                 if verbose:
                     print('cax[{}, {}] = ({:.3f}, {:.3f}, {:.3f}, {:.3f})'.format(yi, xi, x0, y0, x1, y1))
                 if x1 > 0.:
                     self._cax[yi, xi] = self._fig.add_axes([x0, y0, x1, y1])
-                    if self._cb == 't':
-                        self._cax[yi, xi].xaxis.tick_top()
                 else:
                     self._cax[yi, xi] = None
         if self._nx == 1 or self._ny == 1:
@@ -268,19 +218,14 @@ class Multiaxes:
         x2, y2, x3, y3 = box
         return self._fig.add_axes([x0+x1*x2, y0+y1*y2, x1*x3, y1*y3])
 
-    def sharecolorbar(self, loc='right', width=0.1, pad=0.):
+    def sharecolorbar(self, loc='right', width=0.1):
         if loc == 'right':
             x0, y0 = self._ax[0, -1]._position.get_points().flatten()[[2, 1]]
             x1 = width/self._fw
             y1 = self._ax[-1, -1]._position.get_points().flatten()[3]-y0
-            self._cax = self._fig.add_axes([x0+pad, y0, x1, y1])
-        elif loc == 'top':
+            self._cax = self._fig.add_axes([x0, y0, x1, y1])
+        elif loc == 'bottom':
             pass
-            # x0, y0 = self._ax[]
         else:
             raise ValueError("Shared color bar can be located 'right' or 'bottom'.")
         return self._cax
-
-    def topcolorbar(self, cax):
-        cax.xaxis.tick_top()
-        cax.xaxis.set_label_position('top')
