@@ -117,18 +117,11 @@ class Multiaxes:
         if height is None:
             self._tp[:] = 0.
         else:
-
             self._tp[:] = height
         print('Modified title height =', self._tp)
+        return
 
-    def shareaxes(self, xy=None, pad=0.):
-        if xy is None:
-            xy = (True, True)
-        else:
-            try:
-                xy = (xy[0], xy[1])
-            except:
-                raise ValueError("ex) xy=(True, False)")
+    def shareaxes(self, xy=(True, True), pad=0.):
         if xy[0] and self._ny > 1:
             self._sharex = True
             self._xl[1:] = 0.
@@ -146,6 +139,7 @@ class Multiaxes:
                 self._cw[:-1] = 0.
                 self._cl[:-1] = 0.
                 self._cp[:-1] = 0.
+        return
 
     def drawfig(self, verbose=False, border=False):
         page_width = 7.3*self._sc
@@ -284,3 +278,14 @@ class Multiaxes:
     def topcolorbar(self, cax):
         cax.xaxis.tick_top()
         cax.xaxis.set_label_position('top')
+
+    def removeticklabel(self, ax, xy=(True, True)):
+        for ix in ax.flatten():
+            if xy[0]:
+                ix.xaxis.set_major_formatter(plt.NullFormatter())
+                ix.xaxis.set_minor_formatter(plt.NullFormatter())
+            if xy[1]:
+                ix.yaxis.set_major_formatter(plt.NullFormatter())
+                ix.yaxis.set_minor_formatter(plt.NullFormatter())
+        return
+
