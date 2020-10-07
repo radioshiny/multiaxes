@@ -1,5 +1,6 @@
 import numpy as np
 from matplotlib import pyplot as plt
+from astropy.visualization.wcsaxes.core import WCSAxes
 
 plt.rcParams['xtick.direction'] = 'in'
 plt.rcParams['ytick.direction'] = 'in'
@@ -217,11 +218,19 @@ class Multiaxes:
                     print('ax[{}, {}] = ({:.3f}, {:.3f}, {:.3f}, {:.3f})'.format(yi, xi, x0, y0, x1, y1))
                 self._ax[yi, xi] = self._fig.add_axes([x0, y0, x1, y1], projection=self._pj[yi, xi])
                 if self._sharey and xi > 0:
-                    self._ax[yi, xi].yaxis.set_major_formatter(plt.NullFormatter())
-                    self._ax[yi, xi].yaxis.set_minor_formatter(plt.NullFormatter())
+                    if isinstance(self._ax[yi, xi], WCSAxes):
+                        self._ax[yi, xi].coords[1].set_ticklabel_visible(False)
+                        self._ax[yi, xi].coords[1].set_axislabel('')
+                    else:
+                        self._ax[yi, xi].yaxis.set_major_formatter(plt.NullFormatter())
+                        self._ax[yi, xi].yaxis.set_minor_formatter(plt.NullFormatter())
                 if self._sharex and yi > 0:
-                    self._ax[yi, xi].xaxis.set_major_formatter(plt.NullFormatter())
-                    self._ax[yi, xi].xaxis.set_minor_formatter(plt.NullFormatter())
+                    if isinstance(self._ax[yi, xi], WCSAxes):
+                        self._ax[yi, xi].coords[0].set_ticklabel_visible(False)
+                        self._ax[yi, xi].coords[0].set_axislabel('')
+                    else:
+                        self._ax[yi, xi].xaxis.set_major_formatter(plt.NullFormatter())
+                        self._ax[yi, xi].xaxis.set_minor_formatter(plt.NullFormatter())
         for yi in range(self._ny):
             for xi in range(self._nx):
                 if self._cb == 't':
@@ -281,11 +290,19 @@ class Multiaxes:
 
     def removeticklabel(self, ax, xy=(True, True)):
         for ix in ax.flatten():
-            if xy[0]:
-                ix.xaxis.set_major_formatter(plt.NullFormatter())
-                ix.xaxis.set_minor_formatter(plt.NullFormatter())
-            if xy[1]:
-                ix.yaxis.set_major_formatter(plt.NullFormatter())
-                ix.yaxis.set_minor_formatter(plt.NullFormatter())
+            if isinstance(ix, WCSAxes):
+                if xy[0]:
+                    ix.coords[0].set_ticklabel_visible(False)
+                    ix.coords[0].set_axislabel('')
+                if xy[1]:
+                    ix.coords[1].set_ticklabel_visible(False)
+                    ix.coords[1].set_axislabel('')
+            else:
+                if xy[0]:
+                    ix.xaxis.set_major_formatter(plt.NullFormatter())
+                    ix.xaxis.set_minor_formatter(plt.NullFormatter())
+                if xy[1]:
+                    ix.yaxis.set_major_formatter(plt.NullFormatter())
+                    ix.yaxis.set_minor_formatter(plt.NullFormatter())
         return
 
