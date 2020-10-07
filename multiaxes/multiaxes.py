@@ -121,7 +121,7 @@ class Multiaxes:
         print('Modified title height =', self._tp)
         return
 
-    def shareaxes(self, xy=(True, True), pad=0.):
+    def shareaxes(self, xy=(True, True), pad=0.05):
         if xy[0] and self._ny > 1:
             self._sharex = True
             self._xl[1:] = 0.
@@ -239,7 +239,7 @@ class Multiaxes:
                     y1 = ys[yi]/fig_height
                 if verbose:
                     print('cax[{}, {}] = ({:.3f}, {:.3f}, {:.3f}, {:.3f})'.format(yi, xi, x0, y0, x1, y1))
-                if x1 > 0.:
+                if (x1 > 0.) and (y1 > 0.):
                     self._cax[yi, xi] = self._fig.add_axes([x0, y0, x1, y1])
                     if self._cb == 't':
                         self._cax[yi, xi].xaxis.tick_top()
