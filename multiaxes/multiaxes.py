@@ -4,7 +4,7 @@ from matplotlib.colors import ListedColormap
 from astropy.visualization.wcsaxes.core import WCSAxes
 from astropy.io import ascii
 
-_casacolors = ascii.read('casacolors.dat', delimiter=';')
+_casacolors = ascii.read('multiaxes/casacolors.dat', delimiter=';')
 casacmap = {}
 for i in range(len(_casacolors)):
     r = np.array(_casacolors['RED'][i].split(), dtype='float')
