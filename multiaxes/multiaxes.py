@@ -1,6 +1,18 @@
 import numpy as np
 from matplotlib import pyplot as plt
+from matplotlib.colors import ListedColormap
 from astropy.visualization.wcsaxes.core import WCSAxes
+from astropy.io import ascii
+
+_casacolors = ascii.read('casacolors.dat', delimiter=';')
+casacmap = {}
+for i in range(len(_casacolors)):
+    r = np.array(_casacolors['RED'][i].split(), dtype='float')
+    g = np.array(_casacolors['GREEN'][i].split(), dtype='float')
+    b = np.array(_casacolors['BLUE'][i].split(), dtype='float')
+    a = np.full_like(r, 1.)
+    rgba = np.vstack((r, g, b, a)).T
+    casacmap[_casacolors['CMAP_NAME'][i]] = ListedColormap(rgba)
 
 plt.rcParams['xtick.direction'] = 'in'
 plt.rcParams['ytick.direction'] = 'in'
@@ -14,7 +26,6 @@ plt.rcParams['ytick.minor.size'] = 3
 # plt.rcParams['ytick.minor.visible'] = True
 plt.rcParams['xtick.labelsize'] = 'small'
 plt.rcParams['ytick.labelsize'] = 'small'
-
 plt.rcParams['font.family'] = 'sans-serif'
 plt.rcParams['font.sans-serif'] = 'DejaVu Sans'
 plt.rcParams['mathtext.fontset'] = 'dejavusans'
