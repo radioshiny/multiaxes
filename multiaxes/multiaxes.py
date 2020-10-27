@@ -302,9 +302,9 @@ class Multiaxes:
 
     def sharecolorbar(self, loc='right', width=0.1, pad=0.):
         if loc == 'right':
-            x0, y0 = self._ax[-1, -1]._position.get_points().flatten()[[2, 1]]
+            x0, y0 = self._ax[-1, -1].get_position().get_points().flatten()[[2, 1]]
             x1 = width/self._fw
-            y1 = self._ax[0, -1]._position.get_points().flatten()[3]-y0
+            y1 = self._ax[0, -1].get_position().get_points().flatten()[3]-y0
             self._cax = self._fig.add_axes([x0+pad, y0, x1, y1])
         elif loc == 'top':
             pass
