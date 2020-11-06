@@ -308,10 +308,15 @@ class Multiaxes:
             xp = pad/self._fw
             self._cax = self._fig.add_axes([x0+xp, y0, x1, y1])
         elif loc == 'top':
-            pass
-            # x0, y0 = self._ax[]
+            x0, y0 = self._ax[0, 0].get_position().get_points().flatten()[[0, 3]]
+            x1 = self._ax[0, -1].get_position().get_points().flatten()[2]-x0
+            y1 = width/self._fh
+            yp = pad/self._fh
+            self._cax = self._fig.add_axes([x0, y0+yp, x1, y1])
+            self._cax.xaxis.tick_top()
+            self._cax.xaxis.set_label_position('top')
         else:
-            raise ValueError("Shared color bar can be located 'right' or 'bottom'.")
+            raise ValueError("Shared color bar can be located 'right' or 'top'.")
         return self._cax
 
     def topcolorbar(self, cax):
