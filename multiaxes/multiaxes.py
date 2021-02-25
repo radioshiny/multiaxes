@@ -56,14 +56,14 @@ class Multiaxes:
         else:
             warn("col = {}, figure width doesn't match with column or page width.")
             self._col = float(col)
-        if int(nx) in range(1, 10):
+        if int(nx) in range(1, 20):
             self._nx = int(nx)
         else:
-            raise ValueError("'nx' is number of column in figure, (1 to 9)")
-        if int(ny) in range(1, 10):
+            raise ValueError("'nx' is number of column in figure, (1 to 19)")
+        if int(ny) in range(1, 20):
             self._ny = int(ny)
         else:
-            raise ValueError("'ny' is number of line in figure, (1 to 9)")
+            raise ValueError("'ny' is number of line in figure, (1 to 19)")
         self._yr = np.zeros(ny, dtype=float)
         self._xr = np.zeros(nx, dtype=float)
         self._xl = np.zeros(ny, dtype=float)
