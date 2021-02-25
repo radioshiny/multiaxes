@@ -282,9 +282,6 @@ class Multiaxes:
         for yi in range(ny):
             for xi in range(nx):
                 sg[yi, xi] = self._fig.add_axes([x0+xw*xi, y0+yh*yi, xw, yh])
-        sg = np.flip(sg, axis=0)
-        for yi in range(ny):
-            for xi in range(nx):
                 if xi+yi != 0:
                     sg[yi, xi].axes.get_xaxis().set_visible(False)
                     sg[yi, xi].axes.get_yaxis().set_visible(False)
