@@ -7,3 +7,4 @@ This script makes easy to draw a figure with multiple axes for the AASTex manusc
 
 from . import multiaxes
 from .multiaxes import *
+from .colorbars import *
