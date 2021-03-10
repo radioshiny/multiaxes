@@ -281,7 +281,7 @@ class Multiaxes:
         sg = np.zeros((ny, nx), dtype=object)
         for yi in range(ny):
             for xi in range(nx):
-                sg[yi, xi] = self._fig.add_axes([x0+xw*xi+pad/2., y0+yh*yi+pad/2., xw-pad, yh-pad])
+                sg[yi, xi] = self._fig.add_axes([x0+xw*xi+pad/2., y0+yh*yi+pad/2., xw-pad, yh-pad], fc='None')
                 if frame:
                     sg[yi, xi].axes.get_xaxis().set_visible(False)
                     sg[yi, xi].axes.get_yaxis().set_visible(False)
