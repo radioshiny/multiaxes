@@ -277,11 +277,11 @@ class Multiaxes:
         x0, y0, x1, y1 = ax._position.get_points().flatten()
         x1, y1 = x1-x0, y1-y0
         nx, ny = grid
-        xw, yh = (x1-pad)/nx-pad, (y1-pad)/ny-pad
+        xw, yh = x1/nx-pad, y1/ny-pad
         sg = np.zeros((ny, nx), dtype=object)
         for yi in range(ny):
             for xi in range(nx):
-                sg[yi, xi] = self._fig.add_axes([x0+pad+(xw+pad)*xi, y0+pad+(yh+pad)*yi, xw, yh])
+                sg[yi, xi] = self._fig.add_axes([x0+pad/2+(xw+pad)*xi, y0+pad+(yh+pad/2)*yi, xw, yh])
                 if xi+yi != 0:
                     sg[yi, xi].axes.get_xaxis().set_visible(False)
                     sg[yi, xi].axes.get_yaxis().set_visible(False)
