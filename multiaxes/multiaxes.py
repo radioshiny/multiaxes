@@ -282,13 +282,18 @@ class Multiaxes:
         for yi in range(ny):
             for xi in range(nx):
                 sg[yi, xi] = self._fig.add_axes([x0+xw*xi+pad/2., y0+yh*yi+pad/2., xw-pad, yh-pad])
-                if not frame:
+                if frame:
+                    sg[yi, xi].axes.get_xaxis().set_visible(False)
+                    sg[yi, xi].axes.get_yaxis().set_visible(False)
+                else:
                     sg[yi, xi].set_axis_off()
                 if repr is not None:
                     if (xi == repr[0]) and (yi == repr[1]):
-                        sg[yi, xi].set_axis_on()
-                    # sg[yi, xi].axes.get_xaxis().set_visible(False)
-                    # sg[yi, xi].axes.get_yaxis().set_visible(False)
+                        if frame:
+                            sg[yi, xi].axes.get_xaxis().set_visible(True)
+                            sg[yi, xi].axes.get_yaxis().set_visible(True)
+                        else:
+                            sg[yi, xi].set_axis_on()
         return sg
 
     def sharecolorbar(self, loc='right', width=0.1, pad=0.):
