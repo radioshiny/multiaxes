@@ -273,15 +273,15 @@ class Multiaxes:
         x2, y2, x3, y3 = box
         return self._fig.add_axes([x0+x1*x2, y0+y1*y2, x1*x3, y1*y3])
 
-    def subgrid(self, ax, grid):
+    def subgrid(self, ax, grid, pad=0.):
         x0, y0, x1, y1 = ax._position.get_points().flatten()
         x1, y1 = x1-x0, y1-y0
         nx, ny = grid
-        xw, yh = x1/nx, y1/ny
+        xw, yh = (x1-pad)/nx-pad, (y1-pad)/ny-pad
         sg = np.zeros((ny, nx), dtype=object)
         for yi in range(ny):
             for xi in range(nx):
-                sg[yi, xi] = self._fig.add_axes([x0+xw*xi, y0+yh*yi, xw, yh])
+                sg[yi, xi] = self._fig.add_axes([x0+pad+(xw+pad)*xi, y0+pad+(yh+pad)*yi, xw, yh])
                 if xi+yi != 0:
                     sg[yi, xi].axes.get_xaxis().set_visible(False)
                     sg[yi, xi].axes.get_yaxis().set_visible(False)
