@@ -273,7 +273,7 @@ class Multiaxes:
         x2, y2, x3, y3 = box
         return self._fig.add_axes([x0+x1*x2, y0+y1*y2, x1*x3, y1*y3])
 
-    def subgrid(self, ax, grid, pad=0.):
+    def subgrid(self, ax, grid, pad=0., frame=False, repr=None):
         x0, y0, x1, y1 = ax._position.get_points().flatten()
         x1, y1 = x1-x0, y1-y0
         nx, ny = grid
@@ -282,9 +282,13 @@ class Multiaxes:
         for yi in range(ny):
             for xi in range(nx):
                 sg[yi, xi] = self._fig.add_axes([x0+xw*xi+pad/2., y0+yh*yi+pad/2., xw-pad, yh-pad])
-                if xi+yi != 0:
-                    sg[yi, xi].axes.get_xaxis().set_visible(False)
-                    sg[yi, xi].axes.get_yaxis().set_visible(False)
+                if not frame:
+                    sg[yi, xi].set_axis_off()
+                if repr is not None:
+                    if (xi == repr[0]) and (yi == repr[1]):
+                        sg[yi, xi].set_axis_on()
+                    # sg[yi, xi].axes.get_xaxis().set_visible(False)
+                    # sg[yi, xi].axes.get_yaxis().set_visible(False)
         return sg
 
     def sharecolorbar(self, loc='right', width=0.1, pad=0.):
