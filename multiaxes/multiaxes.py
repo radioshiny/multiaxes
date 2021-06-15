@@ -19,6 +19,7 @@ plt.rcParams['ytick.labelsize'] = 'small'
 plt.rcParams['font.family'] = 'sans-serif'
 plt.rcParams['font.sans-serif'] = 'DejaVu Sans'
 plt.rcParams['mathtext.fontset'] = 'dejavusans'
+plt.rcParams['image.interpolation'] = 'nearest'
 
 
 class Multiaxes:
@@ -86,6 +87,7 @@ class Multiaxes:
         self._sc = 1./float(scale)
         self._mg = np.zeros(4, dtype=float)
         self._mg[:] = margin
+        self._mg[2] = margin*1.5
 
     _fig = None
     _ax = None
