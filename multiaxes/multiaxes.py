@@ -1,4 +1,3 @@
-from .colorbars import *
 import numpy as np
 from matplotlib import pyplot as plt
 from astropy.visualization.wcsaxes.core import WCSAxes
@@ -24,7 +23,7 @@ plt.rcParams['image.interpolation'] = 'nearest'
 
 class Multiaxes:
     def __init__(self, col=1, nx=1, ny=1, xyr=1., xlab=0.5, ylab=0.5, xpad=0.2, ypad=0.2, tit=0.,
-                 cb=None, clab=0.4, cpad=0.05, xxr=1., scale=0.6, margin=0.02, proj=None, cpos='top'):
+                 cb=None, clab=0.4, cpad=0.05, xxr=1., scale=0.7, margin=0.02, proj=None, cpos='top'):
         if col in [1, 2]:
             self._col = int(col)
         else:
@@ -87,7 +86,7 @@ class Multiaxes:
         self._sc = 1./float(scale)
         self._mg = np.zeros(4, dtype=float)
         self._mg[:] = margin
-        self._mg[2] = margin*1.5
+        self._mg[2] *= 1.5
 
     _fig = None
     _ax = None
@@ -300,14 +299,22 @@ class Multiaxes:
 
     def sharecolorbar(self, loc='right', width=0.1, pad=0.):
         if loc == 'right':
-            x0, y0 = self._ax[-1, -1].get_position().get_points().flatten()[[2, 1]]
+            if len(self._ax.shape) == 1:
+                x0, y0 = self._ax[-1].get_position().get_points().flatten()[[2, 1]]
+                y1 = self._ax[-1].get_position().get_points().flatten()[3]-y0
+            else:
+                x0, y0 = self._ax[-1, -1].get_position().get_points().flatten()[[2, 1]]
+                y1 = self._ax[0, -1].get_position().get_points().flatten()[3]-y0
             x1 = width/self._fw
-            y1 = self._ax[0, -1].get_position().get_points().flatten()[3]-y0
             xp = pad/self._fw
             self._cax = self._fig.add_axes([x0+xp, y0, x1, y1])
         elif loc == 'top':
-            x0, y0 = self._ax[0, 0].get_position().get_points().flatten()[[0, 3]]
-            x1 = self._ax[0, -1].get_position().get_points().flatten()[2]-x0
+            if len(self._ax.shape) == 1:
+                x0, y0 = self._ax[0].get_position().get_points().flatten()[[0, 3]]
+                x1 = self._ax[-1].get_position().get_points().flatten()[2]-x0
+            else:
+                x0, y0 = self._ax[0, 0].get_position().get_points().flatten()[[0, 3]]
+                x1 = self._ax[0, -1].get_position().get_points().flatten()[2]-x0
             y1 = width/self._fh
             yp = pad/self._fh
             self._cax = self._fig.add_axes([x0, y0+yp, x1, y1])
@@ -338,4 +345,3 @@ class Multiaxes:
                     ix.yaxis.set_major_formatter(plt.NullFormatter())
                     ix.yaxis.set_minor_formatter(plt.NullFormatter())
         return
-
