@@ -324,6 +324,9 @@ class Multiaxes:
             raise ValueError("Shared color bar can be located 'right' or 'top'.")
         return self._cax
 
+    def colorbar(self, mappable=None, cax=None, ax=None, **kwargs):
+        return plt.colorbar(mappable, cax, ax, **kwargs)
+
     def topcolorbar(self, cax):
         cax.xaxis.tick_top()
         cax.xaxis.set_label_position('top')
