@@ -297,6 +297,9 @@ class Multiaxes:
                             sg[yi, xi].set_axis_on()
         return sg
 
+    def colorbar(self, mappable=None, cax=None, ax=None, **kwargs):
+        return plt.colorbar(mappable, cax, ax, **kwargs)
+
     def sharecolorbar(self, loc='right', width=0.1, pad=0.):
         if loc == 'right':
             if len(self._ax.shape) == 1:
@@ -323,9 +326,6 @@ class Multiaxes:
         else:
             raise ValueError("Shared color bar can be located 'right' or 'top'.")
         return self._cax
-
-    def colorbar(self, mappable=None, cax=None, ax=None, **kwargs):
-        return plt.colorbar(mappable, cax, ax, **kwargs)
 
     def topcolorbar(self, cax):
         cax.xaxis.tick_top()
