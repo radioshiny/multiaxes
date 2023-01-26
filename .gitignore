@@ -1,0 +1,17 @@
+.DS_Store
+.idea/encodings.xml
+.idea/misc.xml
+.idea/modules.xml
+.idea/multiaxes.iml
+.idea/workspace.xml
+.idea/codeStyles/codeStyleConfig.xml
+.idea/inspectionProfiles/Project_Default.xml
+multiaxes/__pycache__/__init__.cpython-37.pyc
+multiaxes/__pycache__/__init__.cpython-38.pyc
+multiaxes/__pycache__/__init__.cpython-39.pyc
+multiaxes/__pycache__/colorbars.cpython-37.pyc
+multiaxes/__pycache__/colorbars.cpython-38.pyc
+multiaxes/__pycache__/colorbars.cpython-39.pyc
+multiaxes/__pycache__/multiaxes.cpython-37.pyc
+multiaxes/__pycache__/multiaxes.cpython-38.pyc
+multiaxes/__pycache__/multiaxes.cpython-39.pyc
